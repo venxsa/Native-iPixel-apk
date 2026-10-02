@@ -1,8 +1,6 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -38,7 +36,7 @@ jobs:
 
       - name: Kompilacja APK (Buildozer)
         run: |
-          buildozer -v android debug
+          yes | buildozer -v android debug
 
       - name: Zapisanie gotowego pliku APK
         uses: actions/upload-artifact@v4
