@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Pobieranie kodu
@@ -18,15 +18,30 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Kompilacja APK (Buildozer)
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - name: Konfiguracja Java (JDK 17)
+        uses: actions/setup-java@v4
         with:
-          workdir: .
-          buildozer_version: master
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Zapisanie pliku APK jako Artifact
+      - name: Instalacja zależności systemowych
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip autoconf libtool pkg-config \
+            zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake \
+            libffi-dev libssl-dev lld
+
+      - name: Instalacja Buildozer i Cython
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade buildozer cython
+
+      - name: Kompilacja APK (Buildozer)
+        run: |
+          buildozer -v android debug
+
+      - name: Zapisanie gotowego pliku APK
         uses: actions/upload-artifact@v4
         with:
           name: PixelMatrix-App-APK
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
