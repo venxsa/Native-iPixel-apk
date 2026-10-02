@@ -15,7 +15,7 @@ requirements = python3,kivy,pyjnius,pillow
 android.permissions = BLUETOOTH, BLUETOOTH_ADMIN, BLUETOOTH_SCAN, BLUETOOTH_CONNECT, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
 
 # Architektura procesorów smartfonów
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 
 android.allow_backup = True
 
